@@ -28,4 +28,4 @@ sleep 10
 
 docker-compose -f docker-compose-base.yml build --no-cache
 
-docker-compose -f docker-compse2.yml build --no-cache
+docker-compose -f docker-compose2.yml build --no-cache
