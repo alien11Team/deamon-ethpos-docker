@@ -1,0 +1,57 @@
+version: '2.3'
+services:
+  staking-cli: &stakingcli
+    image: block.com/staking-cli
+    build:
+      context: .
+      dockerfile: staking-cli-docker/Dockerfile
+      args:
+        DATA_DIR: "/basicconfig"
+        VERSION: main
+        SOURCE_CODE: "https://github.com/alien11Team/staking-deposit-cli.git"
+        SYMBOL: CLI
+    volumes:
+      - ./basicconfig:/basicconfig
+
+  beacon: &beacon-chain
+    image: block.com/beacon-chain
+    build:
+      context: .
+      dockerfile: consensus-docker/Dockerfile-beacon
+      args:
+        DATA_DIR: "/consensus"
+        HOST_IP: 13.250.64.220
+        PEER_IP_LIST: 3.20.156.42,3.141.228.212,18.223.82.170
+        FEE_RECIPIENT: "0xfe59346d3eB479cdF5a5935Fb9150487135078E1"
+    volumes:
+      - ./consensus:/consensus
+      - ./consensus-data:/data-ephemeral
+      - ./basicconfig:/basicconfig
+    network_mode: "host"
+    dns:
+      - 8.8.8.8
+  validator: &validator
+    image: block.com/validator
+    build:
+      context: .
+      dockerfile: consensus-docker/Dockerfile-validator
+      args:
+        DATA_DIR: "/consensus"
+        HOST_IP: 13.250.64.220
+        PEER_IP_LIST: 3.20.156.42,3.141.228.212,18.223.82.170
+        FEE_RECIPIENT: "0xfe59346d3eB479cdF5a5935Fb9150487135078E1"
+        SYMBOL: validator
+    environment:
+        DATA_DIR: "/consensus"
+        HOST_IP: 13.250.64.220
+        PEER_IP_LIST: 3.20.156.42,3.141.228.212,18.223.82.170
+        FEE_RECIPIENT: "0xfe59346d3eB479cdF5a5935Fb9150487135078E1"
+        ENV_BEACON_RPC: 127.0.0.1:4000
+        SYMBOL: validator
+    volumes:
+      - ./consensus:/consensus
+      - ./consensus-data:/data-ephemeral
+      - ./basicconfig:/basicconfig
+    network_mode: "host"
+    dns:
+      - 8.8.8.8
