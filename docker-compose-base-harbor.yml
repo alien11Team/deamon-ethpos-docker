@@ -1,0 +1,33 @@
+version: '2.3'
+services:
+  ethbase: &ethbase
+    image: harbor.fursuit.top/or/gethbase
+    build:
+      context: .
+      dockerfile: execution-docker-base/Dockerfile
+      args:
+        CONFIG_BASE_DIR: "/basicconfig"
+        DATA_DIR: "/execution"
+        SOURCE_CODE: "https://github.com/orchain/go-ethereum.git"
+        VERSION: main
+        SYMBOL: ETH
+    volumes:
+      - ./basicconfig:/basicconfig 
+      - ./execution:/execution
+    dns:
+      - 8.8.8.8
+
+  beaconbase: &beaconbase
+    image: harbor.fursuit.top/or/beaconbase
+    build:
+      context: .
+      dockerfile: consensus-docker-base/Dockerfile
+      args:
+        CONFIG_BASE_DIR: "/basicconfig"
+        VERSION: main
+        SOURCE_CODE: "https://github.com/orchain/prysm.git"
+        SYMBOL: BEACON
+    volumes:
+      - ./basicconfig:/basicconfig
+    dns:
+      - 8.8.8.8
