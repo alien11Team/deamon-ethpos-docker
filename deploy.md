@@ -52,11 +52,11 @@ rm -fr consensus/*
 
 1. 生成助记词或者导入助记词，目录为basicconfig/validator_keys
 ```
-docker-compose -f docker-compse2.yml run staking-cli new-mnemonic
+docker-compose -f docker-compose2.yml run staking-cli new-mnemonic
 ```
 或者
 ```
-docker-compose -f docker-compse2.yml run staking-cli existing-mnemonic --mnemonic "xxx xxx xxx ..."
+docker-compose -f docker-compose2.yml run staking-cli existing-mnemonic --mnemonic "xxx xxx xxx ..."
 ```
 2. 初始化validator
 ```
