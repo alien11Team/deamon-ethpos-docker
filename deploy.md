@@ -1,4 +1,4 @@
-
+1
 #### 制作docker镜像，只用运行一次
 - 修改config.yml，EXT_IP，设置外网ip
 - 修改config.yml,ENV_BEACON_RPC，指定beacon rpc的ip:端口
